@@ -6,7 +6,7 @@ function createGrid(dimension) {
     // Fastest way to delete all html code inside the div, which includes any grid previously created
     gridDiv.innerHTML = "";
 
-    const tileSize = (640 - (dimension - 2)) / dimension;
+    const tileSize = Math.floor((640 - (dimension - 2)) / dimension);
 
     for (let i = 0; i < dimension; i++) {
 
