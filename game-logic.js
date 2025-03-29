@@ -1,15 +1,12 @@
-let gridDimension = 16;
+let startingGridDimension = 16;
 
 function createGrid(dimension) {
     const gridDiv = document.querySelector("#game-grid");
 
-    if (gridDiv.children.length != 0) {
-        for (let i = 0; i < gridDiv.children.length; i++) {
-            for (let j = 0; j < gridDiv.children[i].length; j++) {
-                gridDiv.removeChild(gridDiv.children[i]);
-            }
-        }
-    }
+    // Fastest way to delete all html code inside the div, which includes any grid previously created
+    gridDiv.innerHTML = "";
+
+    const tileSize = (640 - (dimension - 2)) / dimension;
 
     for (let i = 0; i < dimension; i++) {
 
@@ -22,8 +19,15 @@ function createGrid(dimension) {
             const gridRowElement = document.createElement("div");
             gridRowElement.id = i.toString() + j.toString();
             gridRowElement.style.border = "1px solid black";
-            gridRowElement.style.width = "30px";
-            gridRowElement.style.height = "30px";
+            gridRowElement.style.backgroundColor = "white";
+            gridRowElement.style.width = gridRowElement.style.height = tileSize.toString() + "px";
+            gridRowElement.classList.add("gridTile");
+
+            gridRowElement.addEventListener("mouseover", () => {
+                console.log(gridRowElement.id);
+                gridRowElement.style.backgroundColor = "red";
+            });
+
             gridRowDiv.appendChild(gridRowElement);
         }
 
@@ -31,4 +35,18 @@ function createGrid(dimension) {
     }
 }
 
-createGrid(gridDimension);
+createGrid(startingGridDimension); // Initial grid setup
+
+const button = document.querySelector("#dimensionChangerButton")
+
+button.addEventListener("click", () => {
+    let newDimension = prompt("What is the new dimension of the grid?");
+    newDimension = Number(newDimension); // Convert input to a number
+
+    if (!isNaN(newDimension) && newDimension > 0) { // Ensure it's a valid positive number
+        createGrid(newDimension);
+    } else {
+        alert("Please enter a valid number.");
+    }
+});
+
